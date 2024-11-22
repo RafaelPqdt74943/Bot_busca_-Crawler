@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
+Dominio = "https://django-anuncios.solyd.com.br"
 
 URL_automoveis= "https://django-anuncios.solyd.com.br/automoveis/"
 
@@ -24,11 +25,32 @@ def parsing(resposta_HTML) :
         return soup
     except Exception as error : 
         print("erro ao fazer o parsing HTML")
-        print(error)     
+        print(error)   
+        
+def encontrar_link (soup):
+    cards_pai = soup.find("div", class_= "ui three doubling link cards")
+    cards = cards_pai.find_all("a")
+    
+    links = []
+    for card in cards : 
+        link =card["href"]
+        links.append(link)
+    
+    return links
         
 resposta=buscar(URL_automoveis)  
         
 if resposta:
     soup=parsing(resposta)
-    print(soup.title) # manipulando o HTML
+    if soup:
+        links = encontrar_link(soup)
+        print(links)
+            
+    
+    
+    #print(soup.title) # manipulando o HTML
     #print(soup.prettify()) # manipulando o HTML
+    #cards_pai = soup.find("div", class_= "ui three doubling link cards")
+    #card = cards_pai.find_all("a")
+    #print(card[0]["href"])
+    
